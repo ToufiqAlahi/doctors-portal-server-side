@@ -27,7 +27,29 @@ async function run() {
             res.send(services);
         })
 
-        
+        app.get('/available', async (req, res) => {
+            const date = req.query.date || 'Sep 16, 2022';
+
+            const services = await serviceCollection.find().toArray();
+
+            const query = { date: date };
+            const bookings = await bookingCollection.find(query).toArray();
+
+            services.forEach(service => {
+                const serviceBooking = bookings.filter(b => b.treatment === service.name);
+                const bookedSlots = serviceBooking.map(s => s.slot);
+                
+                const available = service.slots.filter(s => !bookedSlots.includes(s));
+                service.slots = available;
+                
+            });
+
+
+            res.send(services);
+
+
+
+        })
 
         app.post('/booking', async (req, res) => {
             const booking = req.body;
