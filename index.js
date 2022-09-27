@@ -16,7 +16,7 @@ function verifyJWT(req, res, next) {
     // console.log('abc');
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        return req.status(401).send({ message: 'UnAuthorized Access' });  
+        return req.status(401).send({ message: 'UnAuthorized Access' });
     }
 
    
