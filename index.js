@@ -12,7 +12,16 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.30afqya.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
-function 
+function verifyJWT(req, res, next) {
+    // console.log('abc');
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return req.status(401).send({ message: 'UnAuthorized Access' });  
+    }
+
+   
+    
+}
 async function run() {
 
     try {
@@ -61,7 +70,7 @@ async function run() {
             res.send(services);
         })
 
-        app.get('/booking', async (req, res) => {
+        app.get('/booking', verifyJWT, async (req, res) => {
             const patient = req.query.patient;
             const authorization = req.headers.authorization;
             console.log('Auth Header: ', authorization );
