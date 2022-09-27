@@ -12,6 +12,7 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.30afqya.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+function 
 async function run() {
 
     try {
@@ -62,6 +63,8 @@ async function run() {
 
         app.get('/booking', async (req, res) => {
             const patient = req.query.patient;
+            const authorization = req.headers.authorization;
+            console.log('Auth Header: ', authorization );
             const query = { patient: patient };
             const bookings = await bookingCollection.find(query).toArray();
             res.send(bookings);
